@@ -1,0 +1,20 @@
+{
+  "name": "gyumolcsos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.20.0",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mariadb": "^3.4.5",
+    "nodemon": "^3.1.11"
+  }
+}
