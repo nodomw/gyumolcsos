@@ -2,7 +2,7 @@
   "name": "gyumolcsos",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,6 +13,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.20.0",
   "dependencies": {
+    "@types/express": "^5.0.5",
     "express": "^5.1.0",
     "mariadb": "^3.4.5",
     "nodemon": "^3.1.11"

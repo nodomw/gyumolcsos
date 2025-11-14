@@ -1,11 +1,21 @@
-import config from "./env.js";
+import config from "./env.ts";
 import { createPool } from "mariadb";
 import express from "express";
+
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
 
 const app = express();
 const pool = createPool(config.db);
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(req.method, req.path);
+  console.log(req.body);
+  next();
+});
 
 app.get("/fruits", (req, res) => {
   pool
@@ -20,7 +30,7 @@ app.get("/fruits", (req, res) => {
 });
 
 app.get("/fruits/:id", (req, res) => {
-  let id = req.params.id;
+  let id = Number(req.params.id);
   if (typeof id === "undefined" || id <= 1) {
     res.status(400).redirect("https://http.cat/400");
   } else {
@@ -69,9 +79,10 @@ app.post("/fruits", (req, res) => {
 });
 
 app.put("/fruits/:id", (req, res) => {
-  let id = req.params.id;
+  let id = Number(req.body.id);
   let name = req.body.name;
   let price = req.body.price;
+
   if (
     isNaN(id) ||
     id <= 1 ||
@@ -80,9 +91,10 @@ app.put("/fruits/:id", (req, res) => {
     isNaN(price) ||
     !(price > 0)
   ) {
+    console.log(req.body.id, name, price);
     res.status(400).redirect("https://http.cat/400");
   } else {
-    conn
+    pool
       .execute("update fruits set name = ?, price = ? where id = ?", [
         name,
         price,
