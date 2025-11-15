@@ -119,6 +119,26 @@ app.put("/fruits/:id", (req, res) => {
   }
 });
 
+app.delete("/fruits/:id", (req, res) => {
+  let id = Number(req.params.id);
+
+  if (isNaN(id) || id < 0) {
+    res.status(HttpStatusCode.BAD_REQUEST).redirect("https://http.cat/400");
+  } else {
+    pool
+      .execute("delete from fruits where id = ?", [id])
+      .then((result) => {
+        res.status(HttpStatusCode.OK).json(result);
+      })
+      .catch((err) => {
+        console.error(err);
+        res
+          .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
+          .send("Database delete failed");
+      });
+  }
+});
+
 app.listen(config.server.port, (err) => {
   if (err) {
     console.warn(err);
